@@ -1,17 +1,35 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { Request, Response, NextFunction } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const fullAccessOrigins = ['http://localhost:3000'];
+
   app.enableCors({
     origin: '*',
-    methods: 'GET, PATCH',
-    allowedHeaders: 'Content-Type, Authorization',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
-  app.useGlobalPipes(
-    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
-  );
-  await app.listen(process.env.PORT ?? 5000);
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    const requestMethod = req.method;
+    const origin = req.headers.origin;
+
+    if (
+      !fullAccessOrigins.includes(origin) &&
+      !['GET', 'PUT', 'OPTIONS'].includes(requestMethod)
+    ) {
+      return res.status(405).json({ message: 'Method not allowed' });
+    }
+
+    next();
+  });
+
+  await app.listen(5000);
 }
 bootstrap();
