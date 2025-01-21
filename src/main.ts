@@ -8,7 +8,18 @@ async function bootstrap() {
   const fullAccessOrigins = ['http://localhost:3000'];
 
   app.enableCors({
-    origin: '*',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like Postman)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (fullAccessOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      callback(null, false);
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -19,6 +30,11 @@ async function bootstrap() {
   app.use((req: Request, res: Response, next: NextFunction) => {
     const requestMethod = req.method;
     const origin = req.headers.origin;
+
+    // Allow requests with no origin (like Postman)
+    if (!origin) {
+      return next();
+    }
 
     if (
       !fullAccessOrigins.includes(origin) &&

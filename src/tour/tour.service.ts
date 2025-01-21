@@ -19,6 +19,11 @@ export class TourService {
     return tour.save();
   }
 
+  async getTours() {
+    const tours = await this.tourModel.find().exec();
+    return tours;
+  }
+
   async addStepToTour(tourId: string, stepDto: StepDto) {
     const tour = await this.tourModel.findById(tourId);
     if (!tour) {

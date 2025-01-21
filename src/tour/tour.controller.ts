@@ -32,6 +32,12 @@ export class TourController {
   }
 
   @UseGuards(AuthGuard)
+  @Get()
+  async getTours() {
+    return this.tourService.getTours();
+  }
+
+  @UseGuards(AuthGuard)
   @Patch('update/:tourId')
   async updateTour(@Param('tourId') tourId: string, @Body() body) {
     return this.tourService.updateTour(tourId, body);
@@ -79,9 +85,13 @@ export class TourController {
     @Query('tour') tour: string,
     @Query('increment') increment: number,
     @Query('totalStep') totalStep: number,
-  )
-  {
-    console.log(totalStep)
-    return this.tourProgressService.updateProgress(user, tour, increment, totalStep);
+  ) {
+    console.log(totalStep);
+    return this.tourProgressService.updateProgress(
+      user,
+      tour,
+      increment,
+      totalStep,
+    );
   }
 }

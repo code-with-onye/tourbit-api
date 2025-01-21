@@ -20,10 +20,10 @@ export class Tour extends Document {
   @Prop({ required: true })
   userId: MongooseSchema.Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop()
   alias: string;
 
-  @Prop({ required: true })
+  @Prop()
   title: string;
 
   @Prop({ enum: ['draft', 'active', 'inactive'], default: 'draft' })
