@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { SharedModule } from 'src/shared.module';
-import { Tour, TourSchema } from './schema/tour.schema';
+import { Step, StepSchema, Tour, TourSchema } from './schema/tour.schema';
 import { TourService } from './tour.service';
 import { TourController } from './tour.controller';
 import { User, UserSchema } from 'src/auth/schema/user.schema';
@@ -18,6 +18,7 @@ import {
   imports: [
     SharedModule,
     MongooseModule.forFeature([{ name: Tour.name, schema: TourSchema }]),
+    MongooseModule.forFeature([{ name: Step.name, schema: StepSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: Token.name, schema: TokenSchema }]),
     MongooseModule.forFeature([

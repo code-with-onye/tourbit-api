@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
-@Schema({ _id: false })
-export class Step {
+@Schema({ timestamps: true })
+export class Step extends Document {
   @Prop({ required: true })
   selector: string;
 
@@ -11,6 +11,9 @@ export class Step {
 
   @Prop({ required: true })
   content: string;
+
+  @Prop({ default: false })
+  show: boolean;
 }
 
 export const StepSchema = SchemaFactory.createForClass(Step);

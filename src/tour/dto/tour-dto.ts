@@ -11,6 +11,7 @@ import { Type } from 'class-transformer';
 import { Types } from 'mongoose';
 
 export class StepDto {
+
   @IsString()
   @IsNotEmpty()
   selector: string;

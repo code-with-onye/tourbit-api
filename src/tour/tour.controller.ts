@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
   Param,
@@ -25,6 +26,29 @@ export class TourController {
     private tourProgressService: TourProgressService,
   ) {}
 
+  @Get('progress')
+  async getTourProgress(
+    @Query('user') user: string,
+    @Query('tour') tour: string,
+  ): Promise<TourProgress> {
+    return this.tourProgressService.getProgress(user, tour);
+  }
+
+  @Patch('progress')
+  async updateTourProgress(
+    @Query('user') user: string,
+    @Query('tour') tour: string,
+    @Query('increment') increment: number,
+    @Query('totalStep') totalStep: number,
+  ) {
+    return this.tourProgressService.updateProgress(
+      user,
+      tour,
+      increment,
+      totalStep,
+    );
+  }
+
   @UseGuards(AuthGuard)
   @Post('create')
   async createTour(@Body() body: TourDto, @Request() req) {
@@ -38,7 +62,19 @@ export class TourController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch('update/:tourId')
+  @Get(':tourId')
+  async getTour(@Param('tourId') tourId: string) {
+    return this.tourService.getTour(tourId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':tourId')
+  async deleteTour(@Param('tourId') tourId: string) {
+    return this.tourService.deleteTour(tourId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':tourId')
   async updateTour(@Param('tourId') tourId: string, @Body() body) {
     return this.tourService.updateTour(tourId, body);
   }
@@ -47,6 +83,25 @@ export class TourController {
   @Patch('add-step/:tourId')
   async addStepToTour(@Param('tourId') tourId: string, @Body() step: StepDto) {
     return this.tourService.addStepToTour(tourId, step);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':tourId/steps/:stepId')
+  async updateStep(
+    @Param('tourId') tourId: string,
+    @Param('stepId') stepId: string,
+    @Body() updateStepDto: StepDto,
+  ) {
+    return this.tourService.updateStepInTour(tourId, stepId, updateStepDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':tourId/steps/:stepId/delete')
+  async deleteStep(
+    @Param('tourId') tourId: string,
+    @Param('stepId') stepId: string,
+  ) {
+    return this.tourService.deleteStepInTour(tourId, stepId);
   }
 
   @UseGuards(TokenGuard)
@@ -69,29 +124,5 @@ export class TourController {
   @Post('progress')
   async trackProgress(@Body() body) {
     return this.tourProgressService.trackProgress(body);
-  }
-
-  @Get('progress')
-  async getTourProgress(
-    @Query('user') user: string,
-    @Query('tour') tour: string,
-  ): Promise<TourProgress> {
-    return this.tourProgressService.getProgress(user, tour);
-  }
-
-  @Patch('progress')
-  async updateTourProgress(
-    @Query('user') user: string,
-    @Query('tour') tour: string,
-    @Query('increment') increment: number,
-    @Query('totalStep') totalStep: number,
-  ) {
-    console.log(totalStep);
-    return this.tourProgressService.updateProgress(
-      user,
-      tour,
-      increment,
-      totalStep,
-    );
   }
 }
