@@ -57,8 +57,8 @@ export class TourController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async getTours() {
-    return this.tourService.getTours();
+  async getTours(@Request() req) {
+    return this.tourService.getTours(req.user.sub);
   }
 
   @UseGuards(AuthGuard)

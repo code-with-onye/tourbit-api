@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { SignedInuser } from './schema/signedInuser.schema';
 import { Model } from 'mongoose';
-import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,6 +11,11 @@ export class UserService {
   ) {}
 
   async createUser(data: any) {
+    const existingUser = await this.signedInUserModel.findOne({ email: data.email });
+    if (existingUser) {
+      return null;
+    }
+    
     const user = new this.signedInUserModel(data);
     return user.save();
   }

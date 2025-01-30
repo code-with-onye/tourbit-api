@@ -16,14 +16,22 @@ import { TokenGuard } from './guard/token.guard';
 export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
-  @Post()
   @UseGuards(AuthGuard)
+  @Post()
   async generateToken(@Req() req) {
     const user = req.user;
     const token = await this.tokenService.generateAndStoreToken(
       user.sub,
       user.email,
     );
+    return { token };
+  }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  async getToken(@Req() req) {
+    const user = req.user;
+    const token = await this.tokenService.getToken(user.sub);
     return { token };
   }
 

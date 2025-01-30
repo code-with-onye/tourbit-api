@@ -20,8 +20,8 @@ export class TourService {
     return tour.save();
   }
 
-  async getTours() {
-    const tours = await this.tourModel.find().exec();
+  async getTours(userId: string) {
+    const tours = await this.tourModel.find({ userId }).exec();
     return tours;
   }
 

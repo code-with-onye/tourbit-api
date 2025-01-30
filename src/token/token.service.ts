@@ -21,6 +21,11 @@ export class TokenService {
     return token;
   }
 
+  async getToken(userId: string): Promise<string | null> {
+    const tokenDoc = await this.tokenModel.findOne({ userId }).exec();
+    return tokenDoc ? tokenDoc.token : null;
+  }
+
   async validateToken(
     token: string,
   ): Promise<{ userId: string; email: string } | null> {
