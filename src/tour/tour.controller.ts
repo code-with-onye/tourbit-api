@@ -121,6 +121,7 @@ export class TourController {
     return this.tourService.updatePublicTour(tourId, body);
   }
 
+  @UseGuards(TokenGuard)
   @Post('progress')
   async trackProgress(@Body() body) {
     return this.tourProgressService.trackProgress(body);

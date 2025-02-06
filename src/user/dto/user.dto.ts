@@ -7,6 +7,10 @@ export class UserDto {
 
   @IsString()
   @IsNotEmpty()
+  tourId: string;
+
+  @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsEmail()

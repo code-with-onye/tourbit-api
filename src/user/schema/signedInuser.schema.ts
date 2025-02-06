@@ -7,6 +7,9 @@ export class SignedInuser extends Document {
   userId: string;
 
   @Prop({ required: true })
+  tourId: string;
+
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true, unique: true })

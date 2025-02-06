@@ -11,11 +11,13 @@ export class UserService {
   ) {}
 
   async createUser(data: any) {
-    const existingUser = await this.signedInUserModel.findOne({ email: data.email });
+    const existingUser = await this.signedInUserModel.findOne({
+      email: data.email,
+    });
     if (existingUser) {
       return null;
     }
-    
+
     const user = new this.signedInUserModel(data);
     return user.save();
   }

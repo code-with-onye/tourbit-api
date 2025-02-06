@@ -9,7 +9,7 @@ export class UserController {
     
     @UseGuards(TokenGuard)
     @Post('create')
-    async createUser(@Body() body: any) {
+    async createUser(@Body() body: UserDto) {
         return this.userService.createUser(body);
     }
 }
