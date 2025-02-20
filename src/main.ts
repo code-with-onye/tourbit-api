@@ -5,7 +5,10 @@ import { Request, Response, NextFunction } from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const fullAccessOrigins = ['http://localhost:3000'];
+  const fullAccessOrigins = [
+    'http://localhost:3000',
+    'https://tourbit-jrki.vercel.app',
+  ];
 
   app.enableCors({
     origin: (origin, callback) => {
