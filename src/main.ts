@@ -39,10 +39,13 @@ async function bootstrap() {
       return next();
     }
 
-    if (
-      !fullAccessOrigins.includes(origin) &&
-      !['GET', 'PUT', 'OPTIONS'].includes(requestMethod)
-    ) {
+    // If origin is in fullAccessOrigins, allow all methods
+    if (fullAccessOrigins.includes(origin)) {
+      return next();
+    }
+
+    // For other origins, restrict methods
+    if (!['GET', 'PUT', 'OPTIONS'].includes(requestMethod)) {
       return res.status(405).json({ message: 'Method not allowed' });
     }
 
