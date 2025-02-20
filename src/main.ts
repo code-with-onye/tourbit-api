@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const fullAccessOrigins = [
-    'http://localhost:3000',
+    'http://localhost:3001',
     'https://tourbit-jrki.vercel.app',
   ];
 
