@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run start:dev
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    networks:
+      - tourbit-network
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - tourbit-network
+
+networks:
+  tourbit-network:
+
+volumes:
+  mongodb_data:
