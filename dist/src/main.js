@@ -4,7 +4,10 @@ const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    const fullAccessOrigins = ['http://localhost:3000'];
+    const fullAccessOrigins = [
+        'http://localhost:3000',
+        'https://tourbit-jrki.vercel.app',
+    ];
     app.enableCors({
         origin: (origin, callback) => {
             if (!origin) {
@@ -27,8 +30,10 @@ async function bootstrap() {
         if (!origin) {
             return next();
         }
-        if (!fullAccessOrigins.includes(origin) &&
-            !['GET', 'PUT', 'OPTIONS'].includes(requestMethod)) {
+        if (fullAccessOrigins.includes(origin)) {
+            return next();
+        }
+        if (!['GET', 'PUT', 'OPTIONS'].includes(requestMethod)) {
             return res.status(405).json({ message: 'Method not allowed' });
         }
         next();
