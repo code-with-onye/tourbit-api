@@ -12,6 +12,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: (origin, callback) => {
+      console.log('CORS Origin:', origin); 
       // Allow requests with no origin (like Postman)
       if (!origin) {
         return callback(null, true);
@@ -21,7 +22,7 @@ async function bootstrap() {
         return callback(null, true);
       }
 
-      callback(null, false);
+      callback(new Error('Not allowed by CORS'), false); 
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
