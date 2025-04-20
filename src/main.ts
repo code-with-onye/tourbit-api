@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const fullAccessOrigins = [
     'http://localhost:3000',
-    'https://tourbit-jrki.vercel.app',
+    'https://tourbit.vercel.app',
   ];
 
   app.enableCors({
