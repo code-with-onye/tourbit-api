@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const fullAccessOrigins = [
-    'http://localhost:3000',
     'https://tourbit.vercel.app',
+    'http://localhost:3000',
   ];
 
   app.enableCors({
